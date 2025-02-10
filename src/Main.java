@@ -38,7 +38,8 @@ public class Main {
                         break;
                     }
                     case 6:{
-
+                        method.deleteAccount(checkingAccount,savingAccount);
+                        break;
                     }
                     case 7:{
                         System.out.println("Bye Bye");

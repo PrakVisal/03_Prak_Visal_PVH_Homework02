@@ -11,7 +11,6 @@ public class Method {
     public static final String GREEN = "\u001B[32m";
     Scanner sc = new Scanner(System.in);
     String choiceString;
-    String optionString;
     int choice;
     private String username;
     private String gender;
@@ -21,9 +20,6 @@ public class Method {
     private double balance;
     private boolean CheckingAccountActive = true;
     private boolean SavingAccountActive = true;
-//    boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
-//    CheckingAccount checkingAccount = new CheckingAccount();
-//    SavingAccount savingAccount = new SavingAccount();
 
     public void DisplayMenu(){
         System.out.println(YELLOW+"===========|>Welcome to the Bank Management System<|==========="+RESET);
@@ -83,7 +79,7 @@ public class Method {
              account.setPhoneNumber(phoneNumber);
              account.setBalance(balance);
              System.out.println(GREEN+"======================================="+RESET);
-             System.out.println(GREEN+"|Your "+ accountType +" has been created"+RESET);
+             System.out.println(GREEN+"Your "+ accountType +" has been created"+RESET);
              System.out.println(GREEN+"======================================="+RESET);
     }
     public static void checkingOrsaving(String title){
@@ -248,6 +244,47 @@ public class Method {
                         String amountString = sc.nextLine();
                         double amount = Double.parseDouble(amountString);
                         savingAccount.transfer(amount,checkingAccount);
+                        break;
+                    }
+                    case 3:{
+                        System.out.println(YELLOW+"Exiting Program...."+RESET);
+                        break;
+                    }
+                    default:{
+                        System.out.println(RED+"Invalid choice><"+RESET);
+                    }
+                }
+            }else {
+                System.out.println(RED+"Invalid choice please enter number option"+RESET);
+            }
+        }while (choice!=3);
+    }
+    public void deleteAccount(CheckingAccount checkingAccount, SavingAccount savingAccount) {
+        do {
+            checkingOrsaving("Delete");
+            choiceString = sc.nextLine();
+            boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
+            if(validationCases){
+                choice = Integer.parseInt(choiceString);
+                switch (choice){
+                    case 1:{
+                        System.out.println("Are you sure you want to delete this account?");
+                        sc.nextLine();
+                        checkingAccount.deleteAccount();
+                        checkingAccount.transfer(checkingAccount.getBalance(),savingAccount);
+                        System.out.println(GREEN+"All money transfer to saving account"+RESET);
+                        System.out.println(GREEN+"Account deleted successfully"+RESET);
+                        CheckingAccountActive = true;
+                        break;
+                    }
+                    case 2:{
+                        System.out.println("Are you sure you want to delete this account?");
+                        sc.nextLine();
+                        savingAccount.deleteAccount();
+                        savingAccount.transfer(savingAccount.getBalance(),checkingAccount);
+                        System.out.println(GREEN+"All money transfer to checking account"+RESET);
+                        System.out.println(GREEN+"Account deleted successfully"+RESET);
+                        SavingAccountActive = true;
                         break;
                     }
                     case 3:{
