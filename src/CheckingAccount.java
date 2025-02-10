@@ -70,13 +70,23 @@ public class CheckingAccount implements Account{
 
     @Override
     public void withdraw(double amount) {
-        balance -= amount;
+        double withdrawalLimit = balance * 0.80;
+        if(amount <= withdrawalLimit) {
+            balance -= amount;
+        }else{
+            System.out.println(Method.RED+"Insufficient Balance (Withdrawal must be lower than or equal to 80%"+Method.RESET);
+        }
     }
 
     @Override
     public void transfer(double amount, Account targetAccount) {
-        balance -= amount;
-        targetAccount.setBalance(amount);
+        if(amount <= balance) {
+            balance -= amount;
+            targetAccount.setBalance(amount);
+        }else {
+            System.out.println(Method.RED+"Insufficient Balance"+Method.RESET);
+        }
+
     }
     CheckingAccount(){
 

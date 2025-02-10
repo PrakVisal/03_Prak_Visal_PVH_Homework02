@@ -13,15 +13,6 @@ public class SavingAccount implements Account {
 
     SavingAccount(){
     }
-//    public SavingAccount(String username, double balance, String accountType, String phoneNumber, String dateOfBirth, String gender) {
-//        this.username = username;
-//        this.balance = balance;
-//        this.accountType = accountType;
-//        this.phoneNumber = phoneNumber;
-//        this.dateOfBirth = dateOfBirth;
-//        this.gender = gender;
-//    }
-
     public String getUsername() {
         return username;
     }
@@ -84,8 +75,13 @@ public class SavingAccount implements Account {
 
     @Override
     public void transfer(double amount, Account targetAccount) {
-        balance -= amount;
-        targetAccount.setBalance(amount);
+        if (amount <= balance) {
+            balance -= amount;
+            targetAccount.setBalance(amount);
+        }else {
+            System.out.println(Method.RED+"Insufficient balance"+Method.RESET);
+        }
+
     }
 
     @Override

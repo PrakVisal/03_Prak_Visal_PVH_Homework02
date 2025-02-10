@@ -1,4 +1,4 @@
-import java.util.Objects;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -157,17 +157,38 @@ public class Method {
                 choice = Integer.parseInt(choiceString);
                 switch (choice){
                     case 1:{
-                        System.out.print("Enter amount to deposit: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        checkingAccount.deposit(amount);
+                        while (true){
+                            if(checkingAccount.getUsername()!=null){
+                                System.out.print("Enter amount to deposit: ");
+                                String amountString = sc.nextLine();
+                                double amount = Double.parseDouble(amountString);
+                                checkingAccount.deposit(amount);
+                                System.out.println(GREEN+"Deposited successfully $"+amount+RESET);
+                                System.out.println(GREEN+"Total balance: $"+checkingAccount.getBalance()+RESET);
+                                break;
+                            }else {
+                                System.out.println(RED+"You are not logged in to Checking Account"+RESET);
+                                break;
+                            }
+                        }
                         break;
                     }
                     case 2:{
-                        System.out.print("Enter amount to deposit: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        savingAccount.deposit(amount);
+                        while (true){
+                            if(savingAccount.getUsername()!=null){
+                                System.out.print("Enter amount to deposit: ");
+                                String amountString = sc.nextLine();
+                                double amount = Double.parseDouble(amountString);
+                                savingAccount.deposit(amount);
+                                System.out.println(GREEN+"Deposited successfully $"+amount+RESET);
+                                System.out.println(GREEN+"Total balance: $"+savingAccount.getBalance()+RESET);
+                                break;
+                            }
+                            else {
+                                System.out.println(RED+"You are not logged in to Saving Account"+RESET);
+                                break;
+                            }
+                        }
                         break;
                     }
                     case 3:{
@@ -192,17 +213,49 @@ public class Method {
                 choice = Integer.parseInt(choiceString);
                 switch (choice){
                     case 1:{
-                        System.out.print("Enter amount to withdraw: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        checkingAccount.withdraw(amount);
+                        if(checkingAccount.getBalance()!=0){
+                            while (true){
+                                System.out.print("Enter amount to withdraw: ");
+                                String amountString = sc.nextLine();
+                                boolean validationWithdrawal = Pattern.matches("[0-9]+",amountString);
+                                if(validationWithdrawal){
+                                    double amount = Double.parseDouble(amountString);
+                                    checkingAccount.withdraw(amount);
+                                    System.out.println(GREEN+"Successfully withdrawn $"+amount+RESET);
+                                    System.out.println(GREEN+"Total balance: $"+checkingAccount.getBalance()+RESET);
+                                    System.out.println();
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                }
+                            }
+                        }else {
+                            System.out.println(RED+"You are not logged in to Checking Account or Your balance is $0"+Method.RESET);
+                            System.out.println();
+                        }
                         break;
                     }
                     case 2:{
-                        System.out.print("Enter amount to withdraw: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        savingAccount.withdraw(amount);
+                        if(savingAccount.getBalance()!=0){
+                            while (true){
+                                System.out.print("Enter amount to withdraw: ");
+                                String amountString = sc.nextLine();
+                                boolean validationWithdrawal = Pattern.matches("[0-9]+",amountString);
+                                if(validationWithdrawal){
+                                    double amount = Double.parseDouble(amountString);
+                                    savingAccount.withdraw(amount);
+                                    System.out.println(GREEN+"Successfully withdrawn $"+amount+RESET);
+                                    System.out.println(GREEN+"Total balance: $"+savingAccount.getBalance()+RESET);
+                                    System.out.println();
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                }
+                            }
+                        }else {
+                            System.out.println(RED+"You are not logged in to Saving Account or Your balance is $0"+Method.RESET);
+                            System.out.println();
+                        }
                         break;
                     }
                     case 3:{
@@ -231,28 +284,44 @@ public class Method {
             boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
             if(validationCases){
                 choice = Integer.parseInt(choiceString);
-                switch (choice){
-                    case 1:{
-                        System.out.print("Enter amount to transfer: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        checkingAccount.transfer(amount,savingAccount);
-                        break;
+                if(checkingAccount.getUsername()!=null && savingAccount.getUsername()!=null){
+                    switch (choice){
+                        case 1:{
+                            if(checkingAccount.getBalance()!=0){
+                                System.out.print("Enter amount to transfer: ");
+                                String amountString = sc.nextLine();
+                                double amount = Double.parseDouble(amountString);
+                                checkingAccount.transfer(amount,savingAccount);
+                                break;
+                            }else {
+                                System.out.println(RED+"Your Balance is $0"+RESET);
+                            }
+                            break;
+                        }
+                        case 2:{
+                            if(savingAccount.getBalance()!=0){
+                                System.out.print("Enter amount to transfer: ");
+                                String amountString = sc.nextLine();
+                                double amount = Double.parseDouble(amountString);
+                                savingAccount.transfer(amount,checkingAccount);
+                                break;
+                            }else {
+                                System.out.println(RED+"Your Balance is $0"+RESET);
+                            }
+                            break;
+                        }
+                        case 3:{
+                            System.out.println(YELLOW+"Exiting Program...."+RESET);
+                            break;
+                        }
+                        default:{
+                            System.out.println(RED+"Invalid choice><"+RESET);
+                        }
                     }
-                    case 2:{
-                        System.out.print("Enter amount to transfer: ");
-                        String amountString = sc.nextLine();
-                        double amount = Double.parseDouble(amountString);
-                        savingAccount.transfer(amount,checkingAccount);
-                        break;
-                    }
-                    case 3:{
-                        System.out.println(YELLOW+"Exiting Program...."+RESET);
-                        break;
-                    }
-                    default:{
-                        System.out.println(RED+"Invalid choice><"+RESET);
-                    }
+                }else if(choice==3){
+                    System.out.println(YELLOW+"Exiting Program...."+RESET);
+                }else{
+                    System.out.println(RED+"You must have both account Checking Account and Saving Account to Transfer"+RESET);
                 }
             }else {
                 System.out.println(RED+"Invalid choice please enter number option"+RESET);
@@ -266,34 +335,38 @@ public class Method {
             boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
             if(validationCases){
                 choice = Integer.parseInt(choiceString);
-                switch (choice){
-                    case 1:{
-                        System.out.println("Are you sure you want to delete this account?");
-                        sc.nextLine();
-                        checkingAccount.deleteAccount();
-                        checkingAccount.transfer(checkingAccount.getBalance(),savingAccount);
-                        System.out.println(GREEN+"All money transfer to saving account"+RESET);
-                        System.out.println(GREEN+"Account deleted successfully"+RESET);
-                        CheckingAccountActive = true;
-                        break;
-                    }
-                    case 2:{
-                        System.out.println("Are you sure you want to delete this account?");
-                        sc.nextLine();
-                        savingAccount.deleteAccount();
-                        savingAccount.transfer(savingAccount.getBalance(),checkingAccount);
-                        System.out.println(GREEN+"All money transfer to checking account"+RESET);
-                        System.out.println(GREEN+"Account deleted successfully"+RESET);
-                        SavingAccountActive = true;
-                        break;
-                    }
-                    case 3:{
-                        System.out.println(YELLOW+"Exiting Program...."+RESET);
-                        break;
-                    }
-                    default:{
-                        System.out.println(RED+"Invalid choice><"+RESET);
-                    }
+                if(checkingAccount.getUsername()!=null && savingAccount.getUsername()!=null){
+                        switch (choice){
+                            case 1:{
+                                System.out.println("Are you sure you want to delete this account?");
+                                sc.nextLine();
+                                checkingAccount.deleteAccount();
+                                checkingAccount.transfer(checkingAccount.getBalance(),savingAccount);
+                                System.out.println(GREEN+"All money transfer to saving account"+RESET);
+                                System.out.println(GREEN+"Account deleted successfully"+RESET);
+                                CheckingAccountActive = true;
+                                break;
+                            }
+                            case 2:{
+                                System.out.println("Are you sure you want to delete this account?");
+                                sc.nextLine();
+                                savingAccount.deleteAccount();
+                                savingAccount.transfer(savingAccount.getBalance(),checkingAccount);
+                                System.out.println(GREEN+"All money transfer to checking account"+RESET);
+                                System.out.println(GREEN+"Account deleted successfully"+RESET);
+                                SavingAccountActive = true;
+                                break;
+                            }
+                            case 3:{
+                                System.out.println(YELLOW+"Exiting Program...."+RESET);
+                                break;
+                            }
+                            default:{
+                                System.out.println(RED+"Invalid choice><"+RESET);
+                            }
+                        }
+                }else {
+                    System.out.println(RED+"You don't have any Account to delete"+RESET);
                 }
             }else {
                 System.out.println(RED+"Invalid choice please enter number option"+RESET);
