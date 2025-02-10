@@ -23,11 +23,22 @@ public class Main {
                         break;
                     }
                     case 2:{
-                        //method.deposit();
+                        method.deposit(checkingAccount,savingAccount);
+                        break;
+                    }
+                    case 3:{
+                        method.withdraw(checkingAccount,savingAccount);
+                        break;
+                    }
+                    case 4:{
+                        method.transfer(checkingAccount,savingAccount);
                     }
                     case 5:{
                         method.displayAccount(checkingAccount,savingAccount);
                         break;
+                    }
+                    case 6:{
+
                     }
                     case 7:{
                         System.out.println("Bye Bye");

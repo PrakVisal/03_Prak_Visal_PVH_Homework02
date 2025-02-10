@@ -66,37 +66,38 @@ public class SavingAccount implements Account {
     }
 
     public void setBalance(double balance) {
-        this.balance = balance;
+        this.balance += balance;
     }
 
     @Override
     public void deposit(double amount) {
-
+        balance += amount;
     }
 
     @Override
     public void withdraw(double amount) {
+        balance -= amount;
 
 
     }
 
     @Override
     public void transfer(double amount, Account targetAccount) {
-
-
+        balance -= amount;
+        targetAccount.setBalance(amount);
     }
 
     @Override
     public void displayAccountInfo() {
-                System.out.println("--------------------------------------");
-                System.out.println("===|> "+accountType);
+                System.out.println(Method.YELLOW+"--------------------------------------"+Method.RESET);
+                System.out.println(Method.CYAN+"===|> "+accountType+Method.RESET);
                 System.out.println("Account Type: "+accountType);
                 System.out.println("Account Number: "+rand.nextInt(1000000000));
                 System.out.println("Username: "+username);
                 System.out.println("Date of Birth: "+dateOfBirth);
                 System.out.println("Gender: "+dateOfBirth);
                 System.out.println("Phone Number: "+phoneNumber);
-                System.out.println("Balance: $"+balance);
-                System.out.println("--------------------------------------");
+                System.out.println(Method.GREEN+"Balance: $"+balance+Method.RESET);
+                System.out.println(Method.YELLOW+"--------------------------------------"+Method.RESET);
             }
 }

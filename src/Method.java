@@ -11,6 +11,7 @@ public class Method {
     public static final String GREEN = "\u001B[32m";
     Scanner sc = new Scanner(System.in);
     String choiceString;
+    String optionString;
     int choice;
     private String username;
     private String gender;
@@ -85,15 +86,18 @@ public class Method {
              System.out.println(GREEN+"|Your "+ accountType +" has been created"+RESET);
              System.out.println(GREEN+"======================================="+RESET);
     }
+    public static void checkingOrsaving(String title){
+        System.out.println(GREEN+"===|> "+title+" Account"+RESET);
+        System.out.println("1- Checking Account");
+        System.out.println("2- Saving Account");
+        System.out.println("3- Exiting Program");
+        System.out.println(GREEN+"======================================="+RESET);
+        System.out.println(YELLOW+"What type of account do you want to use?"+RESET);
+        System.out.print("=> Choose type of account : ");
+    }
     public void createAccount(CheckingAccount checkingAccount , SavingAccount savingAccount) {
         do{
-            System.out.println("===|>Creating Account");
-            System.out.println("1- Checking Account");
-            System.out.println("2- Saving Account");
-            System.out.println("3- Exiting Program");
-            System.out.println("=======================================");
-            System.out.println("What type of account do you want to use?");
-            System.out.print("=> Choose type of account : ");
+            checkingOrsaving("Create");
             choiceString = sc.nextLine();
             boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
             if (validationCases){
@@ -146,41 +150,28 @@ public class Method {
                 checkingAccount.displayAccountInfo();
                 savingAccount.displayAccountInfo();
             }
-//            System.out.println("===|> "+accountType);
-//            System.out.println("Account Type: "+accountType);
-//            System.out.println("Account Number: "+Math.random());
-//            System.out.println("Username: "+username);
-//            System.out.println("Date of Birth: "+dateOfBirth);
-//            System.out.println("Gender: "+dateOfBirth);
-//            System.out.println("Phone Number: "+phoneNumber);
-//            System.out.println("Balance: $"+balance);
         }
-    }
-    public static void checkingOrsaving(String title,String choiceString){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("===|>Creating Account");
-        System.out.println("1- Checking Account");
-        System.out.println("2- Saving Account");
-        System.out.println("3- Exiting Program");
-        System.out.println("=======================================");
-        System.out.println("What type of account do you want to use?");
-        System.out.print("=> Choose type of account : ");
-        choiceString = sc.nextLine();
     }
     public void deposit(CheckingAccount checkingAccount, SavingAccount savingAccount) {
         do {
+            checkingOrsaving("Deposit");
+            choiceString = sc.nextLine();
             boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
-            checkingOrsaving("Deposit",choiceString);
             if(validationCases){
                 choice = Integer.parseInt(choiceString);
                 switch (choice){
                     case 1:{
-
-                        checkingAccount.deposit();
+                        System.out.print("Enter amount to deposit: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        checkingAccount.deposit(amount);
                         break;
                     }
                     case 2:{
-                        savingAccount.deposit();
+                        System.out.print("Enter amount to deposit: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        savingAccount.deposit(amount);
                         break;
                     }
                     case 3:{
@@ -195,7 +186,82 @@ public class Method {
                 System.out.println(RED+"Invalid choice please enter number option"+RESET);
             }
         }while (choice!=3);
-
+    }
+    public void withdraw(CheckingAccount checkingAccount, SavingAccount savingAccount) {
+        do {
+            checkingOrsaving("Withdraw");
+            choiceString = sc.nextLine();
+            boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
+            if(validationCases){
+                choice = Integer.parseInt(choiceString);
+                switch (choice){
+                    case 1:{
+                        System.out.print("Enter amount to withdraw: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        checkingAccount.withdraw(amount);
+                        break;
+                    }
+                    case 2:{
+                        System.out.print("Enter amount to withdraw: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        savingAccount.withdraw(amount);
+                        break;
+                    }
+                    case 3:{
+                        System.out.println(YELLOW+"Exiting Program...."+RESET);
+                        break;
+                    }
+                    default:{
+                        System.out.println(RED+"Invalid choice><"+RESET);
+                    }
+                }
+            }else {
+                System.out.println(RED+"Invalid choice please enter number option"+RESET);
+            }
+        }while (choice!=3);
+    }
+    public void transfer(CheckingAccount checkingAccount, SavingAccount savingAccount) {
+        do {
+            System.out.println("===|> Transfer Account");
+            System.out.println("1- Checking Account -> Saving Account");
+            System.out.println("2- Saving Account -> Checking Account");
+            System.out.println("3- Exiting Program");
+            System.out.println("=======================================");
+            System.out.println("What type of account do you want to transfer?");
+            System.out.print("=> Choose type of account : ");
+            choiceString = sc.nextLine();
+            boolean validationCases = Pattern.matches("[0-9]{1,2}", choiceString);
+            if(validationCases){
+                choice = Integer.parseInt(choiceString);
+                switch (choice){
+                    case 1:{
+                        System.out.print("Enter amount to transfer: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        checkingAccount.transfer(amount,savingAccount);
+                        break;
+                    }
+                    case 2:{
+                        System.out.print("Enter amount to transfer: ");
+                        String amountString = sc.nextLine();
+                        double amount = Double.parseDouble(amountString);
+                        savingAccount.transfer(amount,checkingAccount);
+                        break;
+                    }
+                    case 3:{
+                        System.out.println(YELLOW+"Exiting Program...."+RESET);
+                        break;
+                    }
+                    default:{
+                        System.out.println(RED+"Invalid choice><"+RESET);
+                    }
+                }
+            }else {
+                System.out.println(RED+"Invalid choice please enter number option"+RESET);
+            }
+        }while (choice!=3);
     }
 
 }
