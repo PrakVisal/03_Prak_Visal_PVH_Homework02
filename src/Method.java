@@ -1,7 +1,7 @@
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
+import java.time.LocalDate;
 public class Method {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
@@ -18,6 +18,7 @@ public class Method {
     private String dateOfBirth;
     private String accountType;
     private double balance;
+    private String regexDigit = "[0-9]+";
     private boolean CheckingAccountActive = true;
     private boolean SavingAccountActive = true;
 
@@ -43,7 +44,7 @@ public class Method {
                  }
              }
              while (true){
-                 System.out.print("Enter Gender: ");
+                 System.out.print("Enter Gender(M/F): ");
                  gender = sc.nextLine();
                  boolean validGender = Pattern.matches("^[MmFf]$", gender);
                  if (validGender){
@@ -53,7 +54,7 @@ public class Method {
                  }
              }
              while (true){
-                 System.out.print("Enter Date of birth: ");
+                 System.out.print("Enter Date of birth(dd-MM-yyyy): ");
                  dateOfBirth = sc.nextLine();
                  boolean validDateOfBirth = Pattern.matches("^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$", dateOfBirth);
                  if (validDateOfBirth){
@@ -70,7 +71,7 @@ public class Method {
                      break;
                  }
                  else {
-                     System.out.println(RED+"Invalid Phone Number"+RESET);
+                     System.out.println(RED+"Invalid Phone Number it must start from 0 and 9-10 digits"+RESET);
                  }
              }
              account.setUsername(username);
@@ -161,11 +162,15 @@ public class Method {
                             if(checkingAccount.getUsername()!=null){
                                 System.out.print("Enter amount to deposit: ");
                                 String amountString = sc.nextLine();
-                                double amount = Double.parseDouble(amountString);
-                                checkingAccount.deposit(amount);
-                                System.out.println(GREEN+"Deposited successfully $"+amount+RESET);
-                                System.out.println(GREEN+"Total balance: $"+checkingAccount.getBalance()+RESET);
-                                break;
+                                boolean validationDigits = Pattern.matches(regexDigit, amountString);
+                                if (validationDigits){
+                                    double amount = Double.parseDouble(amountString);
+                                    checkingAccount.deposit(amount);
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                }
+
                             }else {
                                 System.out.println(RED+"You are not logged in to Checking Account"+RESET);
                                 break;
@@ -178,11 +183,14 @@ public class Method {
                             if(savingAccount.getUsername()!=null){
                                 System.out.print("Enter amount to deposit: ");
                                 String amountString = sc.nextLine();
-                                double amount = Double.parseDouble(amountString);
-                                savingAccount.deposit(amount);
-                                System.out.println(GREEN+"Deposited successfully $"+amount+RESET);
-                                System.out.println(GREEN+"Total balance: $"+savingAccount.getBalance()+RESET);
-                                break;
+                                boolean validationDigits = Pattern.matches(regexDigit, amountString);
+                                if (validationDigits){
+                                    double amount = Double.parseDouble(amountString);
+                                    savingAccount.deposit(amount);
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                }
                             }
                             else {
                                 System.out.println(RED+"You are not logged in to Saving Account"+RESET);
@@ -221,9 +229,6 @@ public class Method {
                                 if(validationWithdrawal){
                                     double amount = Double.parseDouble(amountString);
                                     checkingAccount.withdraw(amount);
-                                    System.out.println(GREEN+"Successfully withdrawn $"+amount+RESET);
-                                    System.out.println(GREEN+"Total balance: $"+checkingAccount.getBalance()+RESET);
-                                    System.out.println();
                                     break;
                                 }else {
                                     System.out.println(RED+"Invalid amount"+RESET);
@@ -244,9 +249,6 @@ public class Method {
                                 if(validationWithdrawal){
                                     double amount = Double.parseDouble(amountString);
                                     savingAccount.withdraw(amount);
-                                    System.out.println(GREEN+"Successfully withdrawn $"+amount+RESET);
-                                    System.out.println(GREEN+"Total balance: $"+savingAccount.getBalance()+RESET);
-                                    System.out.println();
                                     break;
                                 }else {
                                     System.out.println(RED+"Invalid amount"+RESET);
@@ -273,11 +275,11 @@ public class Method {
     }
     public void transfer(CheckingAccount checkingAccount, SavingAccount savingAccount) {
         do {
-            System.out.println("===|> Transfer Account");
+            System.out.println(CYAN+"===|> Transfer Account"+RESET);
             System.out.println("1- Checking Account -> Saving Account");
             System.out.println("2- Saving Account -> Checking Account");
             System.out.println("3- Exiting Program");
-            System.out.println("=======================================");
+            System.out.println(CYAN+"======================================="+RESET);
             System.out.println("What type of account do you want to transfer?");
             System.out.print("=> Choose type of account : ");
             choiceString = sc.nextLine();
@@ -290,9 +292,15 @@ public class Method {
                             if(checkingAccount.getBalance()!=0){
                                 System.out.print("Enter amount to transfer: ");
                                 String amountString = sc.nextLine();
-                                double amount = Double.parseDouble(amountString);
-                                checkingAccount.transfer(amount,savingAccount);
-                                break;
+                                boolean validationDigit = Pattern.matches(regexDigit, amountString);
+                                if(validationDigit){
+                                    double amount = Double.parseDouble(amountString);
+                                    checkingAccount.transfer(amount,savingAccount);
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                    continue;
+                                }
                             }else {
                                 System.out.println(RED+"Your Balance is $0"+RESET);
                             }
@@ -302,9 +310,15 @@ public class Method {
                             if(savingAccount.getBalance()!=0){
                                 System.out.print("Enter amount to transfer: ");
                                 String amountString = sc.nextLine();
-                                double amount = Double.parseDouble(amountString);
-                                savingAccount.transfer(amount,checkingAccount);
-                                break;
+                                boolean validationDigit = Pattern.matches(regexDigit, amountString);
+                                if(validationDigit){
+                                    double amount = Double.parseDouble(amountString);
+                                    savingAccount.transfer(amount,checkingAccount);
+                                    break;
+                                }else {
+                                    System.out.println(RED+"Invalid amount"+RESET);
+                                    continue;
+                                }
                             }else {
                                 System.out.println(RED+"Your Balance is $0"+RESET);
                             }
@@ -338,23 +352,53 @@ public class Method {
                 if(checkingAccount.getUsername()!=null && savingAccount.getUsername()!=null){
                         switch (choice){
                             case 1:{
-                                System.out.println("Are you sure you want to delete this account?");
-                                sc.nextLine();
-                                checkingAccount.deleteAccount();
-                                checkingAccount.transfer(checkingAccount.getBalance(),savingAccount);
-                                System.out.println(GREEN+"All money transfer to saving account"+RESET);
-                                System.out.println(GREEN+"Account deleted successfully"+RESET);
-                                CheckingAccountActive = true;
+                                while (true){
+                                    System.out.println("Are you sure you want to delete this account?(Y/N)");
+                                    System.out.print("=> ");
+                                    String YesorNo = sc.nextLine();
+                                    boolean vallidationYN = Pattern.matches("[yYnN]",YesorNo);
+                                    if(vallidationYN){
+                                        if(YesorNo.equalsIgnoreCase("y")){
+                                            checkingAccount.deleteAccount();
+                                            checkingAccount.transfer(checkingAccount.getBalance(),savingAccount);
+                                            System.out.println(GREEN+"All money transfer to saving account $"+checkingAccount.getBalance()+RESET);
+                                            System.out.println(GREEN+"Account deleted successfully"+RESET);
+                                            CheckingAccountActive = true;
+                                            break;
+                                        }else if(YesorNo.equalsIgnoreCase("n")){
+                                            break;
+                                        }
+                                    }else {
+                                        System.out.println(RED+"Invalid! Enter (Y/N)"+RESET);
+                                        continue;
+                                    }
+                                    break;
+                                }
                                 break;
                             }
                             case 2:{
-                                System.out.println("Are you sure you want to delete this account?");
-                                sc.nextLine();
-                                savingAccount.deleteAccount();
-                                savingAccount.transfer(savingAccount.getBalance(),checkingAccount);
-                                System.out.println(GREEN+"All money transfer to checking account"+RESET);
-                                System.out.println(GREEN+"Account deleted successfully"+RESET);
-                                SavingAccountActive = true;
+                                while (true){
+                                    System.out.println("Are you sure you want to delete this account?(Y/N)");
+                                    System.out.print("=> ");
+                                    String YesorNo = sc.nextLine();
+                                    boolean vallidationYN = Pattern.matches("[yYnN]",YesorNo);
+                                    if(vallidationYN){
+                                        if(YesorNo.equalsIgnoreCase("y")){
+                                            savingAccount.deleteAccount();
+                                            savingAccount.transfer(savingAccount.getBalance(),checkingAccount);
+                                            System.out.println(GREEN+"All money transfer to checking account"+RESET);
+                                            System.out.println(GREEN+"Account deleted successfully"+RESET);
+                                            SavingAccountActive = true;
+                                            break;
+                                        }else if(YesorNo.equalsIgnoreCase("n")){
+                                            break;
+                                        }
+                                    }else {
+                                        System.out.println(RED+"Invalid! Enter (Y/N)"+RESET);
+                                        continue;
+                                    }
+                                    break;
+                                }
                                 break;
                             }
                             case 3:{

@@ -8,8 +8,9 @@ public class SavingAccount implements Account {
     private String dateOfBirth;
     private String accountType = "Saving Account";
     private double balance;
+    private double interestRate = 0.05;
     Random rand = new Random();
-    private int accountNumber = rand.nextInt(1000000000);
+    final private int accountNumber = rand.nextInt(1000000000);
 
     SavingAccount(){
     }
@@ -63,21 +64,40 @@ public class SavingAccount implements Account {
 
     @Override
     public void deposit(double amount) {
-        balance += amount;
+        if(amount > 0){
+            balance += amount;
+            if(balance >= 200){
+                balance += balance * interestRate;
+            }
+            System.out.println(Method.GREEN+"Deposited successfully $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
+            System.out.println();
+        }else {
+            System.out.println(Method.RED+"You don't have enough money to deposit"+Method.RESET);
+        }
     }
 
     @Override
     public void withdraw(double amount) {
-        balance -= amount;
-
-
+        double withdrawalLimit = balance * 0.80;
+        if(amount <= withdrawalLimit) {
+            balance -= amount;
+            System.out.println(Method.GREEN+"Successfully withdrawn $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
+            System.out.println();
+        }else{
+            System.out.println(Method.RED+"Insufficient Balance (Withdrawal must be lower than or equal to 80%)"+Method.RESET);
+        }
     }
 
     @Override
     public void transfer(double amount, Account targetAccount) {
-        if (amount <= balance) {
+        if (amount >0 && amount <= balance) {
             balance -= amount;
             targetAccount.setBalance(amount);
+            System.out.println(Method.GREEN+"Successfully Transferred $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
+            System.out.println();
         }else {
             System.out.println(Method.RED+"Insufficient balance"+Method.RESET);
         }

@@ -9,7 +9,7 @@ public interface Account {
     void setGender(String gender);
     void setPhoneNumber(String phoneNumber);
     void setDateOfBirth(String dateOfBirth);
-    String getAccountType(); // and the getter if you don't have it already
+    String getAccountType();
     String getUsername();
     String getGender();
     String getPhoneNumber();

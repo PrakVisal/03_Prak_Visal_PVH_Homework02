@@ -1,6 +1,4 @@
 import java.util.Random;
-import java.util.Scanner;
-
 
 public class CheckingAccount implements Account{
     private String username;
@@ -10,14 +8,11 @@ public class CheckingAccount implements Account{
     private String accountType = "Checking Account";
     private double balance;
     Random rand = new Random();
-    private int accountNumber = rand.nextInt(1000000000);
-
-//    Method method = new Method();
+    final private int accountNumber = rand.nextInt(1000000000);
 
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -64,25 +59,36 @@ public class CheckingAccount implements Account{
 
     @Override
     public void deposit(double amount) {
-        balance += amount;
-
-}
+        if (amount > 0){
+            balance += amount;
+            System.out.println(Method.GREEN+"Deposited successfully $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
+            System.out.println();
+        }else {
+            System.out.println(Method.RED+"You don't have enough money to deposit"+Method.RESET);
+        }
+    }
 
     @Override
     public void withdraw(double amount) {
         double withdrawalLimit = balance * 0.80;
         if(amount <= withdrawalLimit) {
             balance -= amount;
+            System.out.println(Method.GREEN+"Successfully withdrawn $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
+            System.out.println();
         }else{
-            System.out.println(Method.RED+"Insufficient Balance (Withdrawal must be lower than or equal to 80%"+Method.RESET);
+            System.out.println(Method.RED+"Insufficient Balance (Withdrawal must be lower than or equal to 80%)"+Method.RESET);
         }
     }
 
     @Override
     public void transfer(double amount, Account targetAccount) {
-        if(amount <= balance) {
+        if(amount > 0 && amount <= balance) {
             balance -= amount;
             targetAccount.setBalance(amount);
+            System.out.println(Method.GREEN+"Successfully Transferred $"+amount+Method.RESET);
+            System.out.println(Method.GREEN+"Total balance: $"+getBalance()+Method.RESET);
         }else {
             System.out.println(Method.RED+"Insufficient Balance"+Method.RESET);
         }

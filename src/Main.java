@@ -32,6 +32,7 @@ public class Main {
                     }
                     case 4:{
                         method.transfer(checkingAccount,savingAccount);
+                        break;
                     }
                     case 5:{
                         method.displayAccount(checkingAccount,savingAccount);
@@ -42,7 +43,7 @@ public class Main {
                         break;
                     }
                     case 7:{
-                        System.out.println("Bye Bye");
+                        System.out.println("Have a nice day:)");
                         break;
                     }
                     default:{
